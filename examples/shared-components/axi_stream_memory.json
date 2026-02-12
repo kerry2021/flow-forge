@@ -1,0 +1,49 @@
+{
+    "parameters": [
+        "DATA_WIDTH"
+    ],
+    "interface_ports": [
+        {
+            "name": "s_axis",
+            "type": "axi_stream",
+            "mode": "slave",
+            "parameters": { 
+                "tdata_width": "DATA_WIDTH",
+                "tdest_width": 2                     
+            },
+            "port_maps": {
+                "tdata": "s_axis_tdata",
+                "tvalid": "s_axis_tvalid",
+                "tready": "s_axis_tready",
+                "tlast": "s_axis_tlast",
+                "tdest": "s_axis_tdest"
+            }
+        },
+        {
+            "name": "m_axis",
+            "type": "axi_stream",
+            "mode": "master",
+            "parameters": { 
+                "tdata_width": "DATA_WIDTH",
+                "tdest_width": 2
+            },
+            "port_maps": {
+                "tdata": "m_axis_tdata",
+                "tvalid": "m_axis_tvalid",
+                "tready": "m_axis_tready",
+                "tlast": "m_axis_tlast",
+                "tdest": "m_axis_tdest"
+            }
+        },
+        { 
+            "name": "clk",
+            "type": "wire",
+            "mode": "input"
+        },
+        {
+            "name": "rst",
+            "type": "wire",
+            "mode": "input"
+        }
+    ]
+}
