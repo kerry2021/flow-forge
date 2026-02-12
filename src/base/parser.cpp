@@ -35,3 +35,31 @@ void parse_interface_ports(const json& j, SystemIR& sys) {
         }
     }
 }
+
+void parse_components(const json& j, SystemIR& sys) {
+    if (!j.contains("components"))
+        return;
+
+    for (const auto& c : j.at("components")) {
+        Component comp;
+
+        comp.name      = c.at("name").get<std::string>();
+        comp.spec_path = c.at("spec_path").get<std::string>();
+        comp.src_path  = c.at("src_path").get<std::string>();
+
+        if (c.contains("parameters")) {
+            for (const auto& [k, v] : c["parameters"].items()) {
+                comp.parameters[k] = v.dump();
+            }
+        }
+
+        // Sanity: no duplicate instance names
+        if (sys.components.count(comp.name)) {
+            throw std::runtime_error(
+                "Duplicate component name: " + comp.name
+            );
+        }
+
+        sys.components.emplace(comp.name, std::move(comp));
+    }
+}

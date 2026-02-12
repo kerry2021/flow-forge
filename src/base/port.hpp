@@ -27,10 +27,6 @@ struct InterfacePort : public Port {
     InterfacePort() { type = PortType::Interface; }
 };
 
-struct SystemIR {
-    std::unordered_map<std::string, std::unique_ptr<Port>> ports;
-};
-
 // -------------------- Helpers --------------------
 PortMode parse_mode(const std::string& s);
 std::string to_string(PortType type);

@@ -2,6 +2,7 @@
 #include <fstream>
 #include "base/port.hpp"
 #include "base/parser.hpp"
+#include "base/system_ir.hpp"
 #include "third_party/json.hpp"
 using json = nlohmann::json;
 
@@ -39,6 +40,24 @@ void print_system_ports(const SystemIR& sys) {
     }
 }
 
+void print_components(const SystemIR& sys) {
+    std::cout << "Components:\n";
+    std::cout << "-----------\n";
+
+    for (const auto& [name, comp] : sys.components) {
+        std::cout << "Component: " << name << "\n";
+        std::cout << "  spec_path: " << comp.spec_path << "\n";
+        std::cout << "  src_path:  " << comp.src_path << "\n";
+
+        std::cout << "  parameters:\n";
+        for (const auto& [k, v] : comp.parameters) {
+            std::cout << "    " << k << " = " << v << "\n";
+        }
+
+        std::cout << "\n";
+    }
+}
+
 
 int main(int argc, char** argv) {
     if (argc != 2) {
@@ -58,6 +77,9 @@ int main(int argc, char** argv) {
     SystemIR system;
     parse_interface_ports(j, system);
     print_system_ports(system);
+
+    parse_components(j, system);
+    print_components(system);
 
     return 0;
 }
