@@ -1,0 +1,1 @@
+g++ -std=c++17 -Wall -Wextra -O2 forge_flow.cpp base/port.cpp base/parser.cpp -o forge_flow

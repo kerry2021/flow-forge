@@ -1,3 +1,4 @@
+#include "connections.hpp"
 #include "parser.hpp"
 #include <iostream>
 
@@ -61,5 +62,28 @@ void parse_components(const json& j, SystemIR& sys) {
         }
 
         sys.components.emplace(comp.name, std::move(comp));
+    }
+}
+
+void parse_connections(const json& j, SystemIR& sys) {
+    if (!j.contains("connections")) {
+        return;
+    }
+
+    for (const auto& jc : j.at("connections")) {
+        Connection c;
+        c.name = jc.at("name").get<std::string>();
+
+        const auto& endpoints = jc.at("endpoints");
+        if (endpoints.size() != 2) {
+            throw std::runtime_error(
+                "Connection '" + c.name + "' must have exactly 2 endpoints"
+            );
+        }
+
+        c.src = EndpointRef::parse(endpoints[0].get<std::string>());
+        c.dst = EndpointRef::parse(endpoints[1].get<std::string>());
+
+        sys.connections.push_back(std::move(c));
     }
 }

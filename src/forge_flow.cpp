@@ -3,6 +3,7 @@
 #include "base/port.hpp"
 #include "base/parser.hpp"
 #include "base/system_ir.hpp"
+#include "base/connections.hpp"
 #include "third_party/json.hpp"
 using json = nlohmann::json;
 
@@ -80,6 +81,11 @@ int main(int argc, char** argv) {
 
     parse_components(j, system);
     print_components(system);
+
+    parse_connections(j, system);
+    for (const auto& c : system.connections) {
+        std::cout << c << std::endl;
+    }
 
     return 0;
 }

@@ -6,3 +6,4 @@ using json = nlohmann::json;
 
 void parse_interface_ports(const json& j, SystemIR& sys);
 void parse_components(const json& j, SystemIR& sys);
+void parse_connections(const json& j, SystemIR& sys);
