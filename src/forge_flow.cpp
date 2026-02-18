@@ -1,9 +1,11 @@
 #include <iostream>
 #include <fstream>
+
 #include "base/port.hpp"
 #include "base/parser.hpp"
 #include "base/system_ir.hpp"
 #include "base/connections.hpp"
+#include "svgen/sv_emitter.hpp"
 #include "third_party/json.hpp"
 using json = nlohmann::json;
 
@@ -32,7 +34,7 @@ void print_system_ports(const SystemIR& sys) {
             }
 
             std::cout << "  signal map:\n";
-            for (const auto& [k, v] : ip->signal_map) {
+            for (const auto& [k, v] : ip->port_maps) {
                 std::cout << "    " << k << " -> " << v << "\n";
             }
         }
@@ -53,6 +55,11 @@ void print_components(const SystemIR& sys) {
         std::cout << "  parameters:\n";
         for (const auto& [k, v] : comp.parameters) {
             std::cout << "    " << k << " = " << v << "\n";
+        }
+
+        std::cout << "  ports:\n";
+        for (const auto& [port_name, port_ptr] : comp.ports) {
+            std::cout << "    " << port_name << " (" << to_string(port_ptr->mode) << ")\n";
         }
 
         std::cout << "\n";
@@ -86,6 +93,11 @@ int main(int argc, char** argv) {
     for (const auto& c : system.connections) {
         std::cout << c << std::endl;
     }
+
+    std::string sv = emit_top_module_sv(system, "top");
+
+    std::cout << "===== GENERATED SYSTEMVERILOG =====\n\n";
+    std::cout << sv;
 
     return 0;
 }

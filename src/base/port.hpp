@@ -23,7 +23,7 @@ struct WirePort : public Port {
 struct InterfacePort : public Port {
     std::string protocol;   
     std::unordered_map<std::string, std::string> parameters;
-    std::unordered_map<std::string, std::string> signal_map;
+    std::unordered_map<std::string, std::string> port_maps;
     InterfacePort() { type = PortType::Interface; }
 };
 

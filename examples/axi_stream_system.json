@@ -5,7 +5,7 @@
             "type": "axi_stream",
             "mode": "slave",
             "parameters": { 
-                "tdata_width": "DATA_WIDTH",
+                "tdata_width": 64,
                 "tdest_width": 2                     
             },
             "port_maps": {
