@@ -19,11 +19,13 @@
         { 
             "name": "clk",
             "type": "wire",
+            "width": 1,
             "mode": "input"
         },
         {
             "name": "rst",
             "type": "wire",
+            "width": 1,
             "mode": "input"
         }
     ],
@@ -66,7 +68,12 @@
         {
             "name" : "rst_connection",
             "endpoints": ["this.rst", "test_master_0.rst"]
-        }
+        },
+        {
+            "name" : "master_to_memory",
+            "endpoints": ["test_master_0.m_axis", "axi_stream_memory_0.s_axis"]
+        }       
+        
     ]
     
 }

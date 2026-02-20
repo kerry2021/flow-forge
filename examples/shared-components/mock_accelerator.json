@@ -40,11 +40,13 @@
         { 
             "name": "clk",
             "type": "wire",
+            "width": 1,
             "mode": "input"
         },
         {
             "name": "rst",
             "type": "wire",
+            "width": 1,
             "mode": "input"
         }
     ]

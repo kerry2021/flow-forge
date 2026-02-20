@@ -31,7 +31,7 @@ static void populate_port_map(const json& j,
 
             if (p.contains("parameters")) {
                 for (auto& [k, v] : p["parameters"].items()) {
-                    port->parameters[k] = v.dump();
+                    port->parameters[k] = v.is_number() ? std::to_string(v.get<int>()) : v.get<std::string>();
                 }
             }
 
