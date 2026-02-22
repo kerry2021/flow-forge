@@ -59,19 +59,23 @@
     "connections": [
         {
             "name" : "test_injector_to_master",
-            "endpoints": ["this.test_injector_s_axis", "test_master_0.s_axis"]
+            "src": "this.test_injector_s_axis",
+            "dsts": ["test_master_0.s_axis"]
         },
         {
             "name" : "clk_connection",
-            "endpoints": ["this.clk", "test_master_0.clk"]
+            "src": "this.clk",
+            "dsts": ["test_master_0.clk", "axi_stream_memory_0.clk"]
         },
         {
             "name" : "rst_connection",
-            "endpoints": ["this.rst", "test_master_0.rst"]
+            "src": "this.rst",
+            "dsts": ["test_master_0.rst", "axi_stream_memory_0.rst"]
         },
         {
             "name" : "master_to_memory",
-            "endpoints": ["test_master_0.m_axis", "axi_stream_memory_0.s_axis"]
+            "src": "test_master_0.m_axis",
+            "dsts": ["axi_stream_memory_0.s_axis"]
         }       
         
     ]

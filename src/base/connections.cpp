@@ -22,8 +22,11 @@ std::ostream& operator<<(std::ostream& os, const EndpointRef& ep) {
 
 std::ostream& operator<<(std::ostream& os, const Connection& conn) {
     os << "Connection(name=" << conn.name
-       << ", src=" << conn.src
-       << ", dst=" << conn.dst
-       << ")";
+       << ", src=" << conn.src;
+    for (const auto& dst : conn.dsts) {
+        os << ", dst=" << dst;
+    }
+    os << ")";
+
     return os;
 }

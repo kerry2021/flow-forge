@@ -119,19 +119,19 @@ void parse_connections(const json& j, SystemIR& sys) {
         Connection c;
         c.name = jc.at("name").get<std::string>();
 
-        const auto& endpoints = jc.at("endpoints");
-        if (endpoints.size() != 2) {
-            throw std::runtime_error(
-                "Connection '" + c.name + "' must have exactly 2 endpoints"
-            );
-        }
+        const auto& destinations = jc.at("dsts");
 
-        c.src = EndpointRef::parse(endpoints[0].get<std::string>());
-        c.dst = EndpointRef::parse(endpoints[1].get<std::string>());
+        c.src = EndpointRef::parse(jc.at("src").get<std::string>());
+        c.dsts = std::vector<EndpointRef>{};
+        for (const auto& dst_str : destinations) {
+            c.dsts.push_back(EndpointRef::parse(dst_str.get<std::string>()));
+        }
 
         // resolve the port pointers immediately
         c.src.port_ptr = resolve_endpoint(sys, c.src);
-        c.dst.port_ptr = resolve_endpoint(sys, c.dst);
+        for (auto& dst : c.dsts) {
+            dst.port_ptr = resolve_endpoint(sys, dst);
+        }
 
         sys.connections.push_back(std::move(c));
     }

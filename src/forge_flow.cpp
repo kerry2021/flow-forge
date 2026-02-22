@@ -97,7 +97,10 @@ int main(int argc, char** argv) {
     std::string sv = emit_top_module_sv(system, "top");
 
     std::cout << "===== GENERATED SYSTEMVERILOG =====\n\n";
-    std::cout << sv;
+    std::ofstream out("top.sv");
+    out << sv;
+    out.close();
+    std::cout << "Generated top.sv\n";
 
     return 0;
 }

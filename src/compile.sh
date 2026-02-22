@@ -1,1 +1,0 @@
-g++ -std=c++17 -Wall -g -O0 forge_flow.cpp base/port.cpp base/parser.cpp base/connections.cpp svgen/sv_emitter.cpp -o forge_flow

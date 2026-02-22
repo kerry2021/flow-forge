@@ -254,35 +254,34 @@ std::string emit_top_module_sv(
     for (const auto& conn : sys.connections) {
         // src and dst are already resolved to actual Port* in parse_connections
         const Port* src_port = conn.src.port_ptr;
-        const Port* dst_port = conn.dst.port_ptr;
-        if (src_port == nullptr || dst_port == nullptr) {
-            throw std::runtime_error("Unresolved endpoint in connection: " + conn.name);
-        }
-        // Determine which is the component port and which is the top-level port
-        if (conn.src.instance == "this") {
-            // src is top-level, dst is component port
-            populate_conn_map(conn.dst.instance, conn.dst.port_ptr, conn.src.port_ptr, comp2sigmap);
-        } else if (conn.dst.instance == "this") {
-            // dst is top-level, src is component port
-            populate_conn_map(conn.src.instance, conn.src.port_ptr, conn.dst.port_ptr, comp2sigmap);
-        } else {
-            Port* intermediate_port = create_intermediate_port(src_port, dst_port, &interconnect_signals, &(sys.components.at(conn.src.instance).parameters));
-            populate_conn_map(conn.src.instance, conn.src.port_ptr, intermediate_port, comp2sigmap);
-            populate_conn_map(conn.dst.instance, conn.dst.port_ptr, intermediate_port, comp2sigmap);
-            std::cout << "here";
+        for (const auto& dst : conn.dsts) {
+            const Port* dst_port = dst.port_ptr;
+            if (src_port == nullptr || dst_port == nullptr) {
+                throw std::runtime_error("Unresolved endpoint in connection: " + conn.name);
+            }
+            // Determine which is the component port and which is the top-level port
+            if (conn.src.instance == "this") {
+                // src is top-level, dst is component port
+                populate_conn_map(dst.instance, dst.port_ptr, src_port, comp2sigmap);
+            } else if (dst.instance == "this") {
+                // dst is top-level, src is component port
+                populate_conn_map(conn.src.instance, conn.src.port_ptr, dst.port_ptr, comp2sigmap);
+            } else {
+                Port* intermediate_port = create_intermediate_port(src_port, dst_port, &interconnect_signals, &(sys.components.at(conn.src.instance).parameters));
+                populate_conn_map(conn.src.instance, conn.src.port_ptr, intermediate_port, comp2sigmap);
+                populate_conn_map(dst.instance, dst.port_ptr, intermediate_port, comp2sigmap);                
+            }
         }
     }
     
     // Emit intermediate signals for connections between component ports
-    bool first_signal = true;
-    for (const auto& [signal_name, width] : interconnect_signals) {
-        if (!first_signal) ss << ",\n";
-        first_signal = false;
+    
+    for (const auto& [signal_name, width] : interconnect_signals) {        
         ss << "    logic";
         if (width > 1) {
             ss << " [" << width << "-1:0]";
         }
-        ss << " " << signal_name;
+        ss << " " << signal_name << ";\n";
     }
 
     // Emit module instances

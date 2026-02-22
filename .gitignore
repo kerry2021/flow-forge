@@ -1,0 +1,5 @@
+# Build artifacts from Makefile
+build/
+# Compiled binary
+flow-forge
+top.sv

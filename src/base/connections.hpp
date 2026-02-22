@@ -19,7 +19,7 @@ struct EndpointRef {
 struct Connection {
     std::string name;
     EndpointRef src;
-    EndpointRef dst;
+    std::vector<EndpointRef> dsts;
 };
 
 
