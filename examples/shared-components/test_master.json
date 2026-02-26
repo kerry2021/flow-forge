@@ -36,13 +36,13 @@
             }
         },
         { 
-            "name": "clk",
+            "name": "aclk",
             "type": "wire",
             "width": 1,
             "mode": "input"
         },
         {
-            "name": "rst",
+            "name": "aresetn",
             "type": "wire",
             "width": 1,
             "mode": "input"

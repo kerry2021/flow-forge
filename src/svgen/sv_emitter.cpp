@@ -77,16 +77,28 @@ std::string emit_module_instance_sv(
     }
 
     if(signal_map.size() != 0){
-        ss << "\n" << module_name << " (\n";
+        ss << "\n" << module_name;
 
+        // Emit the parameter overrides
+        if (!comp.parameters.empty()) {
+            ss << "#(\n";
+            bool first_param = true;
+            for (const auto& [param_name, param_value] : comp.parameters) {
+                if (!first_param) ss << ",\n";
+                first_param = false;
+                ss << "        ." << param_name << "(" << param_value << ")";
+            }
+            ss << "\n    ) ";
+        }
+
+        ss << comp.name << " (\n";
         bool first = true;
         for (const auto& [port_name, signal_name] : signal_map) {
             if (!first) ss << ",\n";
             first = false;
             ss << "        ." << port_name << "(" << signal_name << ")";
-        }
-
-        ss << "\n )" << comp.name << ";\n";
+        }        
+        ss << "\n    );\n";
     }
 
     return ss.str();

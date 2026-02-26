@@ -65,12 +65,12 @@
         {
             "name" : "clk_connection",
             "src": "this.clk",
-            "dsts": ["test_master_0.clk", "axi_stream_memory_0.clk"]
+            "dsts": ["test_master_0.aclk", "axi_stream_memory_0.aclk"]
         },
         {
             "name" : "rst_connection",
             "src": "this.rst",
-            "dsts": ["test_master_0.rst", "axi_stream_memory_0.rst"]
+            "dsts": ["test_master_0.aresetn", "axi_stream_memory_0.aresetn"]
         },
         {
             "name" : "master_to_memory",
